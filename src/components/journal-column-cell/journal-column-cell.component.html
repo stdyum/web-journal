@@ -1,0 +1,9 @@
+@if (column(); as column) {
+  {{ column.title }}
+
+  @if (canEdit()) {
+    <button mat-button (click)="editLessonInfo(column, true)">Edit info</button>
+  } @else {
+    <button mat-button (click)="editLessonInfo(column, false)">Show info</button>
+  }
+}

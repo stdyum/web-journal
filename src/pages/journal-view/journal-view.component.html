@@ -1,0 +1,17 @@
+@if (journal$ | async; as journal) {
+  <section class="rows">
+    @for (row of journal.rows; track row.id) {
+      <span>{{ row.title }}</span>
+    }
+  </section>
+  <section class="columns">
+    @for (column of journal.columns; track column.id) {
+      <journal-column-cell [column]="column" [canEdit]="canEdit(journal)"/>
+    }
+  </section>
+  <main [style.grid-template-areas]="cellsTemplateArea(journal)">
+    @for (cell of journal.cells; track cell.point) {
+      <journal-cell [style.grid-area]="cellArea(cell)" [cell]="cell" [canEditMarks]="canEdit(journal)"/>
+    }
+  </main>
+}

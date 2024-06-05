@@ -1,0 +1,37 @@
+:host {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 150px 1fr;
+  gap: var(--indent2);
+  margin: 0 var(--indent2);
+}
+
+section.columns {
+  grid-row: 1;
+  grid-column: 2;
+  align-self: center;
+}
+
+section.columns journal-column-cell {
+  display: grid;
+  place-items: center;
+  font-variant-numeric: tabular-nums;
+  width: 125px;
+}
+
+section.rows {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+section.rows span {
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+
+main {
+  grid-row: 2;
+  grid-column: 2;
+  display: grid;
+}

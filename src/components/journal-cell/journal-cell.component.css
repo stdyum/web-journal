@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  gap: var(--indent1);
+  height: 50px;
+  padding: var(--indent1);
+  width: fit-content;
+  border-radius: var(--border-radius2);
+  min-width: 125px;
+}
+
+div {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: var(--border-radius1);
+}

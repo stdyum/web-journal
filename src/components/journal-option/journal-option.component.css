@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+  padding: var(--indent2) var(--indent3);
+  gap: var(--indent2);
+  border-radius: var(--border-radius2);
+}
+
+:host > * {
+  flex-grow: 1;
+}
