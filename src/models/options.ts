@@ -1,8 +1,15 @@
+export interface Options {
+  options: Option[];
+  next: string;
+  limit: 10;
+  hasNext: boolean;
+}
+
 export interface Option {
   type: string;
-  subject: OptionSubject
-  group: OptionGroup
-  teacher: OptionTeacher
+  subject: OptionSubject;
+  group: OptionGroup;
+  teacher: OptionTeacher;
 }
 
 export interface OptionSubject {

@@ -4,3 +4,28 @@
   gap: var(--indent3);
   margin: 0 var(--indent2);
 }
+
+fb {
+  padding: 0;
+}
+
+:host::ng-deep > fb form {
+  align-items: center;
+}
+
+:host::ng-deep > fb form .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+:host::ng-deep > fb fb-controls {
+  flex-grow: 1;
+  gap: var(--indent2);
+}
+
+:host::ng-deep > fb fb-submit-button-wrapper {
+  width: 80px;
+}
+
+:host::ng-deep > fb form, :host::ng-deep > fb fb-controls {
+  flex-direction: row;
+}
