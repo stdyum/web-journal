@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { filter, map, Observable } from 'rxjs';
 import { httpContextWithStudyPlace } from '@likdan/studyum-core';
 import { LessonInfo } from '../models/lessons-info';
 
@@ -10,14 +10,18 @@ import { LessonInfo } from '../models/lessons-info';
 export class LessonsInfoService {
   private http = inject(HttpClient);
 
-  getLessonInfo(id: string): Observable<LessonInfo> {
+  getLessonInfo(id: string): Observable<LessonInfo | null> {
     return this.http.get<LessonInfo>(`api/journal/v1/lessons/info/${id}`, {
-      observe: 'response',
+      observe: 'events',
+      context: httpContextWithStudyPlace(),
     })
       .pipe(map(r => {
-        if (r.status >= 400) throw r;
-        return r.body!;
-      }));
+        if (r instanceof HttpErrorResponse) throw r.error;
+        if (r instanceof HttpResponse) return r.body;
+
+        return null
+      }))
+      .pipe(filter(v => !!v));
   }
 
   addLessonInfo(request: any): Observable<LessonInfo> {

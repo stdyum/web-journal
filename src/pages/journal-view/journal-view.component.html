@@ -1,4 +1,7 @@
 @if (journal$ | async; as journal) {
+  <section class="reports">
+    <button mat-flat-button (click)="generateReport()">Generate report</button>
+  </section>
   <section class="rows">
     @for (row of journal.rows; track row.id) {
       <span>{{ row.title }}</span>
@@ -10,6 +13,9 @@
     }
   </section>
   <main [style.grid-template-areas]="cellsTemplateArea(journal)">
+    @for (cell of cells; track cell) {
+      <journal-cell [style.grid-area]="removeEmptyCell(cell)" [cell]="getCell(cell)" [canEditMarks]="canEdit(journal)"/>
+    }
     @for (cell of journal.cells; track cell.point) {
       <journal-cell [style.grid-area]="cellArea(cell)" [cell]="cell" [canEditMarks]="canEdit(journal)"/>
     }

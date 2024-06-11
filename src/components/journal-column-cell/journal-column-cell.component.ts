@@ -4,7 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { JournalColumnCellService } from './journal-column-cell.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LessonInfoDialogComponent } from '../../dialogs/lesson-info-dialog/lesson-info-dialog.component';
-import { filter, switchMap, tap } from 'rxjs';
+import { catchError, filter, map, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'journal-column-cell',
@@ -25,13 +25,17 @@ export class JournalColumnCellComponent {
 
   editLessonInfo(column: JournalColumn, canEdit: boolean): void {
     let exists = false;
-    this.service.getLessonInfo(column.id)
-      .pipe(tap(() => exists = true))
+    of(null)
+      .pipe(switchMap(() => this.service.getLessonInfo(column.id).pipe(catchError(_ => {
+        exists = false;
+        return of({});
+      }))))
       .pipe(switchMap(info => this.dialog.open(LessonInfoDialogComponent, {
           data: { initial: info, canEdit: canEdit },
         }).afterClosed()),
       )
       .pipe(filter(v => !!v))
+      .pipe(map(v => <any>{...v, lessonId: column.id}))
       .pipe(switchMap(v => exists ? this.service.editLessonInfo(v) : this.service.addLessonInfo(v)))
       .subscribe();
   }

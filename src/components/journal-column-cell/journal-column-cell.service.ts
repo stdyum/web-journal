@@ -11,7 +11,7 @@ import { LessonInfo } from '../../models/lessons-info';
 export class JournalColumnCellService {
   private lessonsInfo = inject(LessonsInfoService);
 
-  getLessonInfo(id: string): Observable<LessonInfo> {
+  getLessonInfo(id: string): Observable<LessonInfo | null> {
     return this.lessonsInfo.getLessonInfo(id)
   }
 

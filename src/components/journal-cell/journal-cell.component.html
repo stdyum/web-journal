@@ -5,10 +5,11 @@
          (click)="canEditMarks() && editMark(cell, mark)">
       {{ mark.mark }}
     </div>
-    @if (canEditMarks()) {
-      <div class="secondary-container secondary-container-clickable" (click)="addMark(cell)">
-        +
-      </div>
-    }
+  }
+
+  @if (canEditMarks()) {
+    <div class="secondary-container secondary-container-clickable add-mark" (click)="addMark(cell)">
+      +
+    </div>
   }
 }
