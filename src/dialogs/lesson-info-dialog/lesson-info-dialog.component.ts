@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilderComponent, FormConfig } from '@likdan/form-builder-core';
 import { Buttons, Controls } from '@likdan/form-builder-material';
 import { Validators } from '@angular/forms';
+import { TranslationService } from '@likdan/studyum-core';
 
 @Component({
   selector: 'app-lesson-info-dialog',
@@ -19,27 +20,28 @@ export class LessonInfoDialogComponent {
 
   private data = inject(MAT_DIALOG_DATA);
   private initial = this.data?.initial;
+  private translation = inject(TranslationService);
 
   config = <FormConfig<any>>{
     controls: {
       title: {
         type: Controls.textInput,
-        label: 'Title',
+        label: this.translation.getTranslation('lesson_info_form_title'),
         validators: [Validators.required],
       },
       description: {
         type: Controls.textInput,
-        label: 'Description',
+        label: this.translation.getTranslation('lesson_info_form_description'),
         validators: [Validators.required],
       },
       homework: {
         type: Controls.textInput,
-        label: 'Homework',
+        label: this.translation.getTranslation('lesson_info_form_homework'),
         validators: [Validators.required],
       },
       type: {
         type: Controls.textInput,
-        label: 'Type',
+        label: this.translation.getTranslation('lesson_info_form_type'),
         validators: [Validators.required],
       },
     },
@@ -51,7 +53,7 @@ export class LessonInfoDialogComponent {
     },
     submit: {
       button: Buttons.Submit.Flat,
-      buttonText: 'Confirm',
+      buttonText: this.translation.getTranslation('lesson_info_form_confirm'),
       onSubmit: e => {
         if (!e.valid) return;
 

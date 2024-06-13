@@ -7,6 +7,7 @@ import { Journal, JournalCell } from '../../models/journal';
 import { JournalCellComponent } from '../../components/journal-cell/journal-cell.component';
 import { JournalColumnCellComponent } from '../../components/journal-column-cell/journal-column-cell.component';
 import { MatButton } from '@angular/material/button';
+import { TranslationPipe, TranslationService } from '@likdan/studyum-core';
 
 @Component({
   selector: 'journal-view',
@@ -17,6 +18,7 @@ import { MatButton } from '@angular/material/button';
     JournalCellComponent,
     JournalColumnCellComponent,
     MatButton,
+    TranslationPipe,
   ],
   templateUrl: './journal-view.component.html',
   styleUrl: './journal-view.component.css',
@@ -27,9 +29,9 @@ export class JournalViewComponent {
 
   private service = inject(JournalViewService);
   private route = inject(ActivatedRoute);
-
   journal$ = this.route.queryParams
     .pipe(switchMap(p => this.service.getJournal(p)));
+  private translation = inject(TranslationService);
 
   cellsTemplateArea(journal: Journal): string {
     const areas: string[][] = new Array(journal.rows.length).fill([])
@@ -74,8 +76,13 @@ export class JournalViewComponent {
           display: grid;
           grid-template-rows: auto auto 1fr;
           grid-template-columns: 150px 1fr;
-          gap: var(--indent2);
-          margin: 0 var(--indent2);
+          gap: 16px;
+          margin: 0 16px;
+      }
+
+      h1 {
+        grid-row: 1;
+        grid-column: 2;
       }
 
       .reports, journal-column-cell button, .add-mark {
@@ -144,8 +151,9 @@ export class JournalViewComponent {
 
     const htmlWithStyles = `
     <style>${styles}</style>
+    <h1>${this.translation.getTranslation('report_header')()}</h1>
     ${html}
-    `
+    `;
 
     const win = window.open('', 'Report', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes');
     if (!win) return;

@@ -1,14 +1,16 @@
 @if (options(); as options) {
   <fb [config]="searchFormConfig" />
   @for (option of options.options; track option) {
-    <journal-option
-      [option]="option"
+    <a
       routerLink="view"
-      [queryParams]="buildQueryParamsForOption(option)"
-      class="accent-container-clickable"
-    />
+      [queryParams]="buildQueryParamsForOption(option)">
+      <journal-option
+        [option]="option"
+        class="accent-container-clickable"
+      />
+    </a>
   }
   @if (options.hasNext) {
-    <button mat-flat-button (click)="loadNextOptions()">Load more</button>
+    <button mat-flat-button (click)="loadNextOptions()">{{ 'options_load_more' | translation }}</button>
   }
 }

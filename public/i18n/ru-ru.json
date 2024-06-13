@@ -1,0 +1,22 @@
+{
+  "header_logout": "Выход",
+  "header_login": "Вход",
+  "header_signup": "Регистрация",
+  "options_search_form_group": "Группа",
+  "options_search_form_subject": "Предмет",
+  "options_search_form_teacher": "Преподаватель",
+  "options_search_form_go": "Перейти",
+  "options_load_more": "Загрузить еще",
+  "view_generate_report": "Создать отчет",
+  "view_column_edit_info": "Редактировать информацию",
+  "view_column_show_info": "Показать информацию",
+  "lesson_info_form_title": "Название",
+  "lesson_info_form_description": "Описание",
+  "lesson_info_form_homework": "Домашнее задание",
+  "lesson_info_form_type": "Тип",
+  "lesson_info_form_confirm": "Подтвердить",
+  "mark_form_mark": "Оценка",
+  "mark_form_confirm": "Подтвердить",
+  "mark_form_remove": "Удалить",
+  "report_header": "Отчет об оценках и отсутствиях"
+}

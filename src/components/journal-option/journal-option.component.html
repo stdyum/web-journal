@@ -2,4 +2,9 @@
   <span>{{ option.group.name }}</span>
   <span>{{ option.subject.name }}</span>
   <span>{{ option.teacher.name }}</span>
+  @if(option.editable) {
+    <mat-icon>edit</mat-icon>
+  }  @else {
+    <mat-icon>visibility</mat-icon>
+  }
 }

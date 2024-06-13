@@ -1,4 +1,4 @@
-<fb [config]="config"/>
+<fb [config]="config" />
 @if (initial) {
-  <button mat-flat-button color="error" (click)="remove()">Remove</button>
+  <button mat-flat-button color="error" (click)="remove()">{{ 'mark_form_remove' | translation }}</button>
 }

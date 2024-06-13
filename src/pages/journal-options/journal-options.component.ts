@@ -9,6 +9,7 @@ import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { FormBuilderComponent, FormConfig } from '@likdan/form-builder-core';
 import { Buttons, Controls } from '@likdan/form-builder-material';
+import { TranslationPipe, TranslationService } from '@likdan/studyum-core';
 
 @Component({
   selector: 'journal-options',
@@ -22,6 +23,7 @@ import { Buttons, Controls } from '@likdan/form-builder-material';
     ReactiveFormsModule,
     MatButton,
     FormBuilderComponent,
+    TranslationPipe,
   ],
   templateUrl: './journal-options.component.html',
   styleUrl: './journal-options.component.css',
@@ -30,12 +32,13 @@ import { Buttons, Controls } from '@likdan/form-builder-material';
 export class JournalOptionsComponent {
   private router = inject(Router);
   private service = inject(JournalOptionsService);
+  private translation = inject(TranslationService);
 
   searchFormConfig = <FormConfig<any>>{
     controls: {
       groupId: {
         type: Controls.select,
-        label: 'Group',
+        label: this.translation.getTranslation('options_search_form_group'),
         additionalFields: {
           searchable: false,
           items: this.service.getGroups(),
@@ -44,7 +47,7 @@ export class JournalOptionsComponent {
       },
       subjectId: {
         type: Controls.select,
-        label: 'Subject',
+        label: this.translation.getTranslation('options_search_form_subject'),
         additionalFields: {
           searchable: false,
           items: this.service.getSubjects(),
@@ -53,7 +56,7 @@ export class JournalOptionsComponent {
       },
       teacherId: {
         type: Controls.select,
-        label: 'Teacher',
+        label: this.translation.getTranslation('options_search_form_teacher'),
         additionalFields: {
           searchable: false,
           items: this.service.getTeachers(),
@@ -63,7 +66,7 @@ export class JournalOptionsComponent {
     },
     submit: {
       button: Buttons.Submit.Flat,
-      buttonText: 'Go',
+      buttonText: this.translation.getTranslation('options_search_form_go'),
       onSubmit: e => {
         if (!e.valid) return;
 

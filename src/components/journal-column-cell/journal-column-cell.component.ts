@@ -5,12 +5,14 @@ import { JournalColumnCellService } from './journal-column-cell.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LessonInfoDialogComponent } from '../../dialogs/lesson-info-dialog/lesson-info-dialog.component';
 import { catchError, filter, map, of, switchMap } from 'rxjs';
+import { TranslationPipe } from '@likdan/studyum-core';
 
 @Component({
   selector: 'journal-column-cell',
   standalone: true,
   imports: [
     MatButton,
+    TranslationPipe
   ],
   templateUrl: './journal-column-cell.component.html',
   styleUrl: './journal-column-cell.component.css',

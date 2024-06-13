@@ -2,8 +2,12 @@
   {{ column.title }}
 
   @if (canEdit()) {
-    <button mat-button (click)="editLessonInfo(column, true)">Edit info</button>
+    <button mat-button (click)="editLessonInfo(column, true)">
+      {{ 'view_column_edit_info' | translation }}
+    </button>
   } @else {
-    <button mat-button (click)="editLessonInfo(column, false)">Show info</button>
+    <button mat-button (click)="editLessonInfo(column, false)">
+      {{ 'view_column_show_info' | translation }}
+    </button>
   }
 }

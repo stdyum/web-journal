@@ -10,6 +10,7 @@ export interface Option {
   subject: OptionSubject;
   group: OptionGroup;
   teacher: OptionTeacher;
+  editable: boolean;
 }
 
 export interface OptionSubject {

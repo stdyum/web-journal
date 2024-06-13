@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Option } from '../../models/options';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'journal-option',
@@ -10,6 +11,9 @@ import { Option } from '../../models/options';
     class: 'accent-container',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+  ],
 })
 export class JournalOptionComponent {
   option = input<Option | null>(null);

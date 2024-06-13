@@ -1,6 +1,8 @@
 @if (journal$ | async; as journal) {
   <section class="reports">
-    <button mat-flat-button (click)="generateReport()">Generate report</button>
+    <button mat-flat-button (click)="generateReport()">
+      {{ 'view_generate_report' | translation }}
+    </button>
   </section>
   <section class="rows">
     @for (row of journal.rows; track row.id) {
@@ -9,15 +11,16 @@
   </section>
   <section class="columns">
     @for (column of journal.columns; track column.id) {
-      <journal-column-cell [column]="column" [canEdit]="canEdit(journal)"/>
+      <journal-column-cell [column]="column" [canEdit]="canEdit(journal)" />
     }
   </section>
   <main [style.grid-template-areas]="cellsTemplateArea(journal)">
     @for (cell of cells; track cell) {
-      <journal-cell [style.grid-area]="removeEmptyCell(cell)" [cell]="getCell(cell)" [canEditMarks]="canEdit(journal)"/>
+      <journal-cell [style.grid-area]="removeEmptyCell(cell)" [cell]="getCell(cell)"
+                    [canEditMarks]="canEdit(journal)" />
     }
     @for (cell of journal.cells; track cell.point) {
-      <journal-cell [style.grid-area]="cellArea(cell)" [cell]="cell" [canEditMarks]="canEdit(journal)"/>
+      <journal-cell [style.grid-area]="cellArea(cell)" [cell]="cell" [canEditMarks]="canEdit(journal)" />
     }
   </main>
 }
