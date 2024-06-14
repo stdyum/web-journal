@@ -73,6 +73,7 @@ export class JournalViewComponent {
   generateReport(): void {
     const styles = `
       body {
+          all: unset;
           display: grid;
           grid-template-rows: auto auto 1fr;
           grid-template-columns: 150px 1fr;
@@ -86,10 +87,11 @@ export class JournalViewComponent {
       }
 
       .reports, journal-column-cell button, .add-mark {
-        display: none;
+        display: none !important;
       }
 
       journal-cell {
+        background: unset !important;
         display: flex;
         gap: 8px;
         height: 50px;
@@ -98,6 +100,7 @@ export class JournalViewComponent {
       }
 
       journal-cell div {
+        background: unset !important;
         display: grid;
         place-items: center;
         height: 100%;
