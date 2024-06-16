@@ -1,5 +1,5 @@
+<fb [config]="searchFormConfig" />
 @if (options(); as options) {
-  <fb [config]="searchFormConfig" />
   @for (option of options.options; track option) {
     <a
       routerLink="view"

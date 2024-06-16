@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { JournalViewService } from './journal-view.service';
 import { switchMap } from 'rxjs';
 import { AsyncPipe, JsonPipe } from '@angular/common';
-import { Journal, JournalCell } from '../../models/journal';
+import { Journal, JournalCell, JournalColumn, JournalRow } from '../../models/journal';
 import { JournalCellComponent } from '../../components/journal-cell/journal-cell.component';
 import { JournalColumnCellComponent } from '../../components/journal-column-cell/journal-column-cell.component';
 import { MatButton } from '@angular/material/button';
@@ -44,7 +44,17 @@ export class JournalViewComponent {
       });
     });
 
-    return areas.map(a => '"' + a.join(' ') + '"').join('\n');
+    const columnsArea = `"fill ${journal.columns.map(c => `col${c.id}`).join(' ')}"`;
+    const rowsArea = journal.rows.map(c => `row${c.id}`);
+    return columnsArea + '\n' + areas.map((a, i) => `"${rowsArea[i]} ${a.join(' ')}"`).join('\n');
+  }
+
+  columnArea(column: JournalColumn): string {
+    return `col${column.id}`;
+  }
+
+  rowArea(row: JournalRow): string {
+    return `row${row.id}`;
   }
 
   cellArea(cell: JournalCell): string {
@@ -75,8 +85,8 @@ export class JournalViewComponent {
       body {
           all: unset;
           display: grid;
-          grid-template-rows: auto auto 1fr;
-          grid-template-columns: 150px 1fr;
+          display: flex;
+          flex-direction: column;
           gap: 16px;
           margin: 0 16px;
       }
@@ -86,8 +96,17 @@ export class JournalViewComponent {
         grid-column: 2;
       }
 
-      .reports, journal-column-cell button, .add-mark {
+      .reports, journal-column-cell button, .add-mark{
         display: none !important;
+      }
+
+      .fill {
+        width: auto;
+      }
+
+      main > * {
+        width: 100%;
+        border: 1px solid black;
       }
 
       journal-cell {
@@ -107,47 +126,33 @@ export class JournalViewComponent {
         border-radius: var(--border-radius1);
       }
 
-      section.columns {
-        grid-row: 2;
-        grid-column: 2;
+      main span {
         display: flex;
-        align-self: center;
-        gap: 16px;
+        align-items: center;
+        height: 50px;
+        padding: 0 8px;
+        width: auto;
       }
 
-      section.columns journal-column-cell {
+      main journal-column-cell {
         display: grid;
         place-items: center;
         font-variant-numeric: tabular-nums;
-        width: 125px;
+        width: auto;
       }
 
       journal-cell {
         min-width: 125px;
         width: fit-content;
-      }
-
-      section.rows {
-        grid-row: 3;
-        grid-column: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      section.rows span {
-        display: flex;
-        align-items: center;
-        height: 50px;
+        padding: 0 8px;
       }
 
       main {
-        grid-row: 3;
-        grid-column: 2;
         display: grid;
         grid-template-columns: min-content;
         grid-template-rows: min-content;
-        grid-gap: 16px;
+        width: max-content;
+        border: 1px solid black;
       }
     `;
     const html = document.getElementsByTagName('journal-view')[0].innerHTML;
@@ -158,13 +163,13 @@ export class JournalViewComponent {
     ${html}
     `;
 
-    const win = window.open('', 'Report', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes');
+    const win = window.open('', '_blank', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes');
     if (!win) return;
 
     win.document.body.innerHTML = htmlWithStyles;
   }
 
   private columnRowArea(columnId: string, rowId: string): string {
-    return columnId.replaceAll(/[^a-zA-Z0-9]/g, '') + rowId.replaceAll(/[^a-zA-Z0-9]/g, '');
+    return 'area' + columnId.replaceAll(/[^a-zA-Z0-9]/g, '') + rowId.replaceAll(/[^a-zA-Z0-9]/g, '');
   }
 }

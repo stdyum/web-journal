@@ -4,7 +4,6 @@ import { AsyncPipe, JsonPipe } from '@angular/common';
 import { JournalOptionComponent } from '../../components/journal-option/journal-option.component';
 import { Params, Router, RouterLink } from '@angular/router';
 import { Option } from '../../models/options';
-import { TextInputComponent } from '@likdan/form-builder-material/src/components';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { FormBuilderComponent, FormConfig } from '@likdan/form-builder-core';
@@ -19,7 +18,6 @@ import { TranslationPipe, TranslationService } from '@likdan/studyum-core';
     JsonPipe,
     JournalOptionComponent,
     RouterLink,
-    TextInputComponent,
     ReactiveFormsModule,
     MatButton,
     FormBuilderComponent,
@@ -40,8 +38,10 @@ export class JournalOptionsComponent {
         type: Controls.select,
         label: this.translation.getTranslation('options_search_form_group'),
         additionalFields: {
-          searchable: false,
-          items: this.service.getGroups(),
+          searchable: true,
+          searchInputText: this.translation.getTranslation('controls_select_search'),
+          loadNextButtonText: this.translation.getTranslation('controls_select_load_next'),
+          ...this.service.getGroups(),
         },
         validators: [Validators.required],
       },
@@ -49,8 +49,10 @@ export class JournalOptionsComponent {
         type: Controls.select,
         label: this.translation.getTranslation('options_search_form_subject'),
         additionalFields: {
-          searchable: false,
-          items: this.service.getSubjects(),
+          searchable: true,
+          searchInputText: this.translation.getTranslation('controls_select_search'),
+          loadNextButtonText: this.translation.getTranslation('controls_select_load_next'),
+          ...this.service.getSubjects(),
         },
         validators: [Validators.required],
       },
@@ -58,8 +60,10 @@ export class JournalOptionsComponent {
         type: Controls.select,
         label: this.translation.getTranslation('options_search_form_teacher'),
         additionalFields: {
-          searchable: false,
-          items: this.service.getTeachers(),
+          searchable: true,
+          searchInputText: this.translation.getTranslation('controls_select_search'),
+          loadNextButtonText: this.translation.getTranslation('controls_select_load_next'),
+          ...this.service.getTeachers(),
         },
         validators: [Validators.required],
       },

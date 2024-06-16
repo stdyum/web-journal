@@ -4,17 +4,14 @@
       {{ 'view_generate_report' | translation }}
     </button>
   </section>
-  <section class="rows">
-    @for (row of journal.rows; track row.id) {
-      <span>{{ row.title }}</span>
-    }
-  </section>
-  <section class="columns">
-    @for (column of journal.columns; track column.id) {
-      <journal-column-cell [column]="column" [canEdit]="canEdit(journal)" />
-    }
-  </section>
   <main [style.grid-template-areas]="cellsTemplateArea(journal)">
+    <div class="fill"></div>
+    @for (column of journal.columns; track column.id) {
+      <journal-column-cell [style.grid-area]="columnArea(column)" [column]="column" [canEdit]="canEdit(journal)" />
+    }
+    @for (row of journal.rows; track row.id) {
+      <span [style.grid-area]="rowArea(row)">{{ row.title }}</span>
+    }
     @for (cell of cells; track cell) {
       <journal-cell [style.grid-area]="removeEmptyCell(cell)" [cell]="getCell(cell)"
                     [canEditMarks]="canEdit(journal)" />

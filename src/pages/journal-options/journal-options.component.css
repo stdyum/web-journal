@@ -3,6 +3,8 @@
   flex-direction: column;
   gap: var(--indent3);
   margin: 0 var(--indent2);
+  padding-top: var(--indent1);
+  overflow-y: scroll;
 }
 
 fb {
@@ -28,4 +30,8 @@ fb {
 
 :host::ng-deep > fb form, :host::ng-deep > fb fb-controls {
   flex-direction: row;
+}
+
+button {
+  min-height: 30px;
 }

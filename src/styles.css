@@ -1,1 +1,10 @@
 @import "../node_modules/@likdan/studyum-core/public/styles.css";
+
+body, app-root, page-wrapper {
+  overflow: hidden;
+}
+
+page-wrapper {
+  height: 100%;
+  background-color: inherit;
+}

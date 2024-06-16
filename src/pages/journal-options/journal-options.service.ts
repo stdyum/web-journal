@@ -19,18 +19,15 @@ export class JournalOptionsService {
     return this.optionsService.nextOptions();
   }
 
-  getSubjects(): Observable<Subject[]> {
-    return this.registry.getSubjectsPaginatedForSelect()
-      .pipe(map(p => p?.items ?? []));
+  getSubjects(): Object {
+    return this.registry.getSubjectsPaginatedSelectConfig()
   }
 
-  getGroups(): Observable<Group[]> {
-    return this.registry.getGroupsPaginatedForSelect()
-      .pipe(map(p => p?.items ?? []));
+  getGroups(): Object {
+    return this.registry.getGroupsPaginatedSelectConfig()
   }
 
-  getTeachers(): Observable<Teacher[]> {
-    return this.registry.getTeachersPaginatedForSelect()
-      .pipe(map(p => p?.items ?? []));
+  getTeachers(): Object {
+    return this.registry.getTeachersPaginatedSelectConfig()
   }
 }
