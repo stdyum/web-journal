@@ -1,10 +1,12 @@
 @if (cell(); as cell) {
-  @for (mark of cell.marks; track mark) {
-    <div class="secondary-container"
-         [class.secondary-container-clickable]="canEditMarks()"
-         (click)="canEditMarks() && editMark(cell, mark)">
-      {{ mark.mark }}
-    </div>
+  @if (marks(); as marks) {
+    @for (mark of marks; track mark) {
+      <div class="secondary-container"
+           [class.secondary-container-clickable]="canEditMarks()"
+           (click)="canEditMarks() && showMarkDialog(cell, mark)">
+        {{ mark.mark }}
+      </div>
+    }
   }
 
   @if (canEditMarks()) {
