@@ -8,8 +8,8 @@
 }
 
 section.reports {
-  grid-row: 1;
-  grid-column: 1/3;
+  display: flex;
+  gap: var(--indent2);
   position: sticky;
   left: 0;
 }

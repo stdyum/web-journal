@@ -1,17 +1,40 @@
 @if (cell(); as cell) {
   @if (marks(); as marks) {
-    @for (mark of marks; track mark) {
-      <div class="secondary-container"
+    @for (mark of marks; track mark.id) {
+      <div class="secondary-container mark"
            [class.secondary-container-clickable]="canEditMarks()"
            (click)="canEditMarks() && showMarkDialog(cell, mark)">
         {{ mark.mark }}
       </div>
     }
   }
+  @if (absences(); as absences) {
+    @for (absence of absences; track absence.id) {
+      <div class="secondary-container absence"
+           [class.secondary-container-clickable]="canEditMarks()"
+           (click)="canEditMarks() && showAbsenceDialog(cell, absence)">
+        @if (absence.absence) {
+          {{ 'view_cell_latency' | translation }}&nbsp;{{ absence.absence }}&nbsp;{{ 'view_cell_latency_min' | translation }}
+        } @else {
+          {{ 'view_cell_absence' | translation }}
+        }
+      </div>
+    }
+  }
 
   @if (canEditMarks()) {
-    <div class="secondary-container secondary-container-clickable add-mark" (click)="addMark(cell)">
+    <div class="secondary-container secondary-container-clickable add-mark" [mat-menu-trigger-for]="menu">
       +
     </div>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="addMark(cell)">
+        {{ 'view_cell_actions_add_mark' | translation }}
+      </button>
+      @if (!absences().length) {
+        <button mat-menu-item (click)="addAbsence(cell)">
+          {{ 'view_cell_actions_add_absence' | translation }}
+        </button>
+      }
+    </mat-menu>
   }
 }

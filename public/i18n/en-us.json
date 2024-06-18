@@ -9,8 +9,14 @@
   "options_search_form_teacher": "Teacher",
   "options_search_form_go": "Go",
   "options_load_more": "Load more",
-  "view_generate_report": "Generate report",
+  "view_generate_report_marks": "Generate marks report",
+  "view_generate_report_absences": "Generate absences report",
   "view_column_edit_info": "Edit info",
+  "view_cell_latency": "Latency",
+  "view_cell_latency_min": "min",
+  "view_cell_absence": "Absence",
+  "view_cell_actions_add_mark": "Mark",
+  "view_cell_actions_add_absence": "Absence",
   "lesson_info_form_title": "Title",
   "lesson_info_form_description": "Description",
   "lesson_info_form_homework": "Homework",
@@ -19,5 +25,9 @@
   "mark_form_mark": "Mark",
   "mark_form_confirm": "Confirm",
   "mark_form_remove": "Remove",
-  "report_header": "Marks and absences report"
+  "absence_form_absence": "Absence",
+  "absence_form_confirm": "Confirm",
+  "absence_form_remove": "Remove",
+  "report_marks_header": "Marks report",
+  "report_absences_header": "Absences report"
 }

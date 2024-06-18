@@ -1,10 +1,13 @@
 @if (journal$ | async; as journal) {
   <section class="reports">
-    <button mat-flat-button (click)="generateReport()">
-      {{ 'view_generate_report' | translation }}
+    <button mat-flat-button (click)="generateReport('report_marks_header', '.absence')">
+      {{ 'view_generate_report_marks' | translation }}
+    </button>
+    <button mat-flat-button (click)="generateReport('report_absences_header', '.mark')">
+      {{ 'view_generate_report_absences' | translation }}
     </button>
   </section>
-  <main [style.grid-template-areas]="cellsTemplateArea(journal)">
+  <main [style.grid-template-areas]="cellsTemplateAreas()">
     <div class="fill"></div>
     @for (column of journal.columns; track column.id) {
       <journal-column-cell [style.grid-area]="columnArea(column)" [column]="column" [canEdit]="canEdit(journal)" />
@@ -12,8 +15,8 @@
     @for (row of journal.rows; track row.id) {
       <span [style.grid-area]="rowArea(row)">{{ row.title }}</span>
     }
-    @for (cell of cells; track cell) {
-      <journal-cell [style.grid-area]="removeEmptyCell(cell)" [cell]="getCell(cell)"
+    @for (cell of cells(); track cell) {
+      <journal-cell [style.grid-area]="emptyCell(cell)" [cell]="getCell(journal, cell)"
                     [canEditMarks]="canEdit(journal)" />
     }
     @for (cell of journal.cells; track cell.point) {

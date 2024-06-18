@@ -8,10 +8,19 @@
   min-width: 125px;
 }
 
-div {
+div.mark, div.add-mark {
   display: grid;
   place-items: center;
   height: 100%;
   aspect-ratio: 1/1;
   border-radius: var(--border-radius1);
+  padding: 0 var(--indent1);
+}
+
+div.absence {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  border-radius: var(--border-radius1);
+  padding: 0 var(--indent1);
 }

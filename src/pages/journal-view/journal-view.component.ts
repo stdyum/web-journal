@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JournalViewService } from './journal-view.service';
-import { switchMap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Journal, JournalCell, JournalColumn, JournalRow } from '../../models/journal';
 import { JournalCellComponent } from '../../components/journal-cell/journal-cell.component';
@@ -25,28 +25,44 @@ import { TranslationPipe, TranslationService } from '@likdan/studyum-core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JournalViewComponent {
-  cells: [string, string][] = [];
+  cells = signal<[string, string][]>([]);
+  cellsTemplateAreas = signal<string>('');
 
   private service = inject(JournalViewService);
   private route = inject(ActivatedRoute);
+
   journal$ = this.route.queryParams
-    .pipe(switchMap(p => this.service.getJournal(p)));
+    .pipe(switchMap(p => this.service.getJournal(p)))
+    .pipe(tap(j => this.cellsTemplateAreas.set(this.generateCellsTemplateAreas(j))))
+    .pipe(tap(j => this.cells.set(this.generateCells(j))));
+
   private translation = inject(TranslationService);
 
-  cellsTemplateArea(journal: Journal): string {
+  generateCellsTemplateAreas(journal: Journal): string {
     const areas: string[][] = new Array(journal.rows.length).fill([])
       .map(() => new Array(journal.columns.length).fill(''));
 
     journal.columns.forEach((c, ci) => {
       journal.rows.forEach((r, ri) => {
         areas[ri][ci] = this.columnRowArea(r.id, c.id);
-        this.cells.push([r.id, c.id]);
       });
     });
 
     const columnsArea = `"fill ${journal.columns.map(c => `col${c.id}`).join(' ')}"`;
     const rowsArea = journal.rows.map(c => `row${c.id}`);
     return columnsArea + '\n' + areas.map((a, i) => `"${rowsArea[i]} ${a.join(' ')}"`).join('\n');
+  }
+
+  generateCells(journal: Journal): [string, string][] {
+    const cells: [string, string][] = [];
+
+    journal.columns.forEach(c => {
+      journal.rows.forEach(r => {
+        cells.push([r.id, c.id]);
+      });
+    });
+
+    return cells;
   }
 
   columnArea(column: JournalColumn): string {
@@ -65,22 +81,28 @@ export class JournalViewComponent {
     return journal.info.type === 'group';
   }
 
-  getCell(cell: [string, string]): JournalCell {
-    return {
-      point: {
-        rowId: cell[0],
-        columnId: cell[1],
-      },
-      marks: [],
-    };
+  getCell(journal: Journal, cell: [string, string]): JournalCell {
+    let cellIndex = journal.cells.findIndex(c => c.point.rowId === cell[0] && c.point.columnId === cell[1]);
+    if (cellIndex === -1) {
+      journal.cells.push({
+        point: {
+          rowId: cell[0],
+          columnId: cell[1],
+        },
+        marks: [],
+        absences: [],
+      });
+      cellIndex = journal.cells.length - 1;
+    }
+
+    return journal.cells[cellIndex];
   }
 
-  removeEmptyCell(cell: [string, string]): string {
-    this.cells = this.cells.filter(a => a[0] !== cell[0] && a[1] !== cell[1]);
+  emptyCell(cell: [string, string]): string {
     return this.columnRowArea(cell[0], cell[1]);
   }
 
-  generateReport(): void {
+  generateReport(title: string, invisibleSelector: string): void {
     const styles = `
       body {
           all: unset;
@@ -96,7 +118,7 @@ export class JournalViewComponent {
         grid-column: 2;
       }
 
-      .reports, journal-column-cell button, .add-mark{
+      .reports, journal-column-cell button, .add-mark, ${invisibleSelector} {
         display: none !important;
       }
 
@@ -143,8 +165,10 @@ export class JournalViewComponent {
 
       journal-cell {
         min-width: 125px;
-        width: fit-content;
+        width: 100%;
+        height: 100%;
         padding: 0 8px;
+        box-sizing: border-box;
       }
 
       main {
@@ -159,7 +183,7 @@ export class JournalViewComponent {
 
     const htmlWithStyles = `
     <style>${styles}</style>
-    <h1>${this.translation.getTranslation('report_header')()}</h1>
+    <h1>${this.translation.getTranslation(title)()}</h1>
     ${html}
     `;
 

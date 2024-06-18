@@ -18,6 +18,7 @@ export interface JournalColumn {
 export interface JournalCell {
   point: JournalCellPoint;
   marks: JournalMark[];
+  absences: JournalAbsence[];
 }
 
 export interface JournalCellPoint {
@@ -28,6 +29,13 @@ export interface JournalCellPoint {
 export interface JournalMark {
   id: string;
   mark: string;
+  lessonId: string;
+  studentId: string;
+}
+
+export interface JournalAbsence {
+  id: string;
+  absence: number;
   lessonId: string;
   studentId: string;
 }
