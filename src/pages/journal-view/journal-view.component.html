@@ -1,10 +1,7 @@
 @if (journal$ | async; as journal) {
   <section class="reports">
-    <button mat-flat-button (click)="generateReport('report_marks_header', '.absence')">
-      {{ 'view_generate_report_marks' | translation }}
-    </button>
-    <button mat-flat-button (click)="generateReport('report_absences_header', '.mark')">
-      {{ 'view_generate_report_absences' | translation }}
+    <button mat-flat-button (click)="showReportConfigDialog()">
+      {{ 'view_generate_report' | translation }}
     </button>
   </section>
   <main [style.grid-template-areas]="cellsTemplateAreas()">

@@ -9,8 +9,7 @@
   "options_search_form_teacher": "Teacher",
   "options_search_form_go": "Go",
   "options_load_more": "Load more",
-  "view_generate_report_marks": "Generate marks report",
-  "view_generate_report_absences": "Generate absences report",
+  "view_generate_report": "Generate report",
   "view_column_edit_info": "Edit info",
   "view_cell_latency": "Latency",
   "view_cell_latency_min": "min",
@@ -28,6 +27,11 @@
   "absence_form_absence": "Absence",
   "absence_form_confirm": "Confirm",
   "absence_form_remove": "Remove",
+  "report_config_form_type": "Type",
+  "report_config_form_type_marks": "Marks",
+  "report_config_form_type_absences": "Absences",
+  "report_config_form_range": "Range",
+  "report_config_form_confirm": "Confirm",
   "report_marks_header": "Marks report",
   "report_absences_header": "Absences report"
 }

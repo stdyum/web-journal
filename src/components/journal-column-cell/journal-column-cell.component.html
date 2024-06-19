@@ -1,5 +1,5 @@
 @if (column(); as column) {
-  {{ column.title }}
+  <span>{{ column.title }}</span>
 
   @if (canEdit()) {
     <button mat-button (click)="editLessonInfo(column, true)">

@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JournalViewService } from './journal-view.service';
-import { switchMap, tap } from 'rxjs';
+import { filter, switchMap, take, tap } from 'rxjs';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Journal, JournalCell, JournalColumn, JournalRow } from '../../models/journal';
 import { JournalCellComponent } from '../../components/journal-cell/journal-cell.component';
 import { JournalColumnCellComponent } from '../../components/journal-column-cell/journal-column-cell.component';
 import { MatButton } from '@angular/material/button';
 import { TranslationPipe, TranslationService } from '@likdan/studyum-core';
+import { MatDialog } from '@angular/material/dialog';
+import { ReportConfigDialogComponent } from '../../dialogs/report-config-dialog/report-config-dialog.component';
 
 @Component({
   selector: 'journal-view',
@@ -30,12 +32,11 @@ export class JournalViewComponent {
 
   private service = inject(JournalViewService);
   private route = inject(ActivatedRoute);
-
   journal$ = this.route.queryParams
     .pipe(switchMap(p => this.service.getJournal(p)))
     .pipe(tap(j => this.cellsTemplateAreas.set(this.generateCellsTemplateAreas(j))))
     .pipe(tap(j => this.cells.set(this.generateCells(j))));
-
+  private dialog = inject(MatDialog);
   private translation = inject(TranslationService);
 
   generateCellsTemplateAreas(journal: Journal): string {
@@ -48,8 +49,8 @@ export class JournalViewComponent {
       });
     });
 
-    const columnsArea = `"fill ${journal.columns.map(c => `col${c.id}`).join(' ')}"`;
-    const rowsArea = journal.rows.map(c => `row${c.id}`);
+    const columnsArea = `"fill ${journal.columns.map(c => `col${c.id.replaceAll(/[^a-zA-Z0-9]/g, '')}`).join(' ')}"`;
+    const rowsArea = journal.rows.map(c => `row${c.id.replaceAll(/[^a-zA-Z0-9]/g, '')}`);
     return columnsArea + '\n' + areas.map((a, i) => `"${rowsArea[i]} ${a.join(' ')}"`).join('\n');
   }
 
@@ -66,11 +67,11 @@ export class JournalViewComponent {
   }
 
   columnArea(column: JournalColumn): string {
-    return `col${column.id}`;
+    return `col${column.id.replaceAll(/[^a-zA-Z0-9]/g, '')}`;
   }
 
   rowArea(row: JournalRow): string {
-    return `row${row.id}`;
+    return `row${row.id.replaceAll(/[^a-zA-Z0-9]/g, '')}`;
   }
 
   cellArea(cell: JournalCell): string {
@@ -102,7 +103,16 @@ export class JournalViewComponent {
     return this.columnRowArea(cell[0], cell[1]);
   }
 
-  generateReport(title: string, invisibleSelector: string): void {
+  showReportConfigDialog(): void {
+    this.dialog.open(ReportConfigDialogComponent)
+      .afterClosed()
+      .pipe(take(1))
+      .pipe(filter(v => !!v))
+      .pipe(tap(console.log))
+      .subscribe(v => this.generateReport(v.type.title, v.type.classesToHide, v.range.start, v.range.end));
+  }
+
+  private generateReport(title: string, invisibleSelector: string, from: Date, to: Date): void {
     const styles = `
       body {
           all: unset;
@@ -129,6 +139,7 @@ export class JournalViewComponent {
       main > * {
         width: 100%;
         border: 1px solid black;
+        overflow: hidden;
       }
 
       journal-cell {
@@ -141,7 +152,7 @@ export class JournalViewComponent {
       }
 
       journal-cell div {
-        background: unset !important;
+        background: white !important;
         display: grid;
         place-items: center;
         height: 100%;
@@ -184,13 +195,47 @@ export class JournalViewComponent {
     const htmlWithStyles = `
     <style>${styles}</style>
     <h1>${this.translation.getTranslation(title)()}</h1>
-    ${html}
-    `;
+    ${html}`;
 
     const win = window.open('', '_blank', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes');
     if (!win) return;
 
     win.document.body.innerHTML = htmlWithStyles;
+
+    function isDateInRange(dateString: any, startDate: any, endDate: any) {
+      const date = new Date(dateString);
+      return date >= startDate && date <= endDate;
+    }
+
+    function hideColumns(area: string): void {
+      win!.document.querySelectorAll('main > journal-cell').forEach(el => {
+        if ((el as HTMLElement).style.gridArea.includes(area)) {
+          (el as HTMLElement).style.display = 'none';
+        }
+      });
+    }
+
+    function hideElementsByDate(selector: any) {
+      const elements = win!.document.querySelectorAll(selector);
+
+      const templateColumns: string[] = ['auto'];
+
+      elements.forEach(element => {
+        const dateText = element.innerText.trim();
+        if (isDateInRange(dateText, from, to)) {
+          templateColumns.push('auto');
+        } else {
+          templateColumns.push('0');
+          (element as HTMLElement).parentElement!.style.display = 'none';
+          const area = (element as HTMLElement).parentElement!.style.gridArea.substring(3);
+          hideColumns(area);
+        }
+      });
+
+      win!.document.querySelector('main')!.style.gridTemplateColumns = templateColumns.join(' ');
+    }
+
+    hideElementsByDate('journal-column-cell > span');
   }
 
   private columnRowArea(columnId: string, rowId: string): string {

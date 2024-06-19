@@ -7,6 +7,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { TranslationService, withDefaultInterceptors } from '@likdan/studyum-core';
 import { provideGetErrorMessageFunc } from '@likdan/form-builder-material/errors';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 
 export const appConfig: ApplicationConfig = {
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withDefaultInterceptors()),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideNativeDateAdapter(),
     provideAnimations(),
   ],
 };

@@ -9,8 +9,7 @@
   "options_search_form_teacher": "Преподаватель",
   "options_search_form_go": "Перейти",
   "options_load_more": "Загрузить еще",
-  "view_generate_report_marks": "Создать отчет об оценках",
-  "view_generate_report_absences": "Создать отчет об отсутствиях",
+  "view_generate_report": "Создать отчет",
   "view_column_edit_info": "Редактировать информацию",
   "view_cell_latency": "Опоздание",
   "view_cell_latency_min": "мин",
@@ -28,6 +27,11 @@
   "absence_form_absence": "Отсутствие",
   "absence_form_confirm": "Подтвердить",
   "absence_form_remove": "Удалить",
+  "report_config_form_type": "Тип",
+  "report_config_form_type_marks": "Оценки",
+  "report_config_form_type_absences": "Отсутствия",
+  "report_config_form_range": "Диапазон",
+  "report_config_form_confirm": "Подтвердить",
   "report_marks_header": "Отчет об оценках",
   "report_absences_header": "Отчет об отсутствиях"
 }
